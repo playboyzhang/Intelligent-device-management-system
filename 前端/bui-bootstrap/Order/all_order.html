@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <!--时间样式-->
+    <link rel="stylesheet" type="text/css" href="../Css/ca.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script> -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Public/ExcelJS.js"></script>
+    <!--时间js-->
+    <script type="text/javascript" src="../Js/laydate.js"></script>
+    <title>创建订单</title>
+</head>
+<body style=" background-color: #e4ebf4;">
+
+
+
+<div style="width:600px;height:530px;margin:auto;" id="submitform">
+    <div style="width:400px;height:50px;margin:0 auto;text-align:center"><H3 >创建订单</H3></div>
+    <div class="input-group "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">客户手机号　</span>
+        <input type="text" class="form-control"  name="area" id="cus_phone" placeholder="请输入客户手机号" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">车牌号　　　</span>
+        <input type="text" class="form-control"  name="area" id="cNumber" placeholder="请输入车牌号" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">身份证　　　</span>
+        <input type="text" class="form-control"  name="area" id="INumber" placeholder="请输入身份证" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">石油体积　　</span>
+        <input type="text" class="form-control"  name="area" id="volume" placeholder="请输入石油体积" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group demo2 "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">预定日期　　</span>
+        <input type="text" placeholder="请输入日期" class="laydate-icon "  id="date" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
+
+    </div>
+    <div class="input-group "style="width:400px;height:50px;margin:0 auto;padding-top:15px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">石油种类　　</span>
+        <input type="text" class="form-control"  name="area" id="sore" placeholder="请输入石油种类" aria-describedby="basic-addon1">
+    </div>
+
+    <div style="width:100px;height:30px;margin:0 auto"><button type="button" onclick="freeoilpipe()" class="btn btn-success" >登记</button></div>
+</div>
+
+<div id="formchose">
+    <div>
+        <button type="button" onclick="functionchose()" class="btn btn-success" style="position:relative;left:50px;top:50px;float:left">确定</button>
+    </div>
+    <div style="position:relative;top:80px;">
+        <table class="table table-bordered table-hover definewidth m10" >
+            <thead>
+            <tr>
+                <th> 选择</th>
+                <th>油罐</th>
+                <th>总阀</th>
+                <th>鹤位</th>
+                <th>价格</th>
+            </tr>
+            </thead>
+
+            <tbody id="choseform">
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="form">
+    <div >
+        <div class="input-group col-md-2 "style="position:relative;width:260px;left:50px;top:50px;float:left">
+            <span style="font-family: 'Adobe 宋体 Std L';">　员工名称　</span>
+            <input type="text" class="form-control" style="width:120px"  id="em_name" placeholder="请输入员工名称" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group col-md-2 " style="position:relative;top:50px;float:left">
+            <span style="font-family: 'Adobe 宋体 Std L';">　客户信息　</span>
+            <input type="text" class="form-control" style="width:120px"  id="cus_info" placeholder="请输入客户信息" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group col-md-2 " style="position:relative;top:50px;float:left">
+            <span style="font-family: 'Adobe 宋体 Std L';">　时间段　</span>
+            <input type="text" class="form-control" style="width:120px"  id="Dtime" placeholder="请输入时间段" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group col-md-2 " style="position:relative;top:50px;float:left">
+            <span style="font-family: 'Adobe 宋体 Std L';">　订单状态　</span>
+            <select id="state" style="width:120px">
+                <option></option>
+                <option>Done</option>
+                <option>waiting</option>
+                <option>Executing</option>
+            </select>
+        </div>　
+
+        <button type="button" onclick="function2()" class="btn btn-success" style="position:relative;left:50px;top:50px;float:left">搜索</button>
+        <button type="button" class="btn btn-info" value="导出EXCEL" onclick="method1('ta')" style="position:relative;left:80px;top:50px;float:left" >导出EXCEL</button>
+    </div>
+    <div style="position:relative;top:80px;">
+        <table class="table table-bordered table-hover definewidth m10" id="ta">
+          <thead>
+              <tr>
+                <th>订单ID</th>
+                <th>客户手机号</th>
+                <th>车牌号</th>
+                <th>身份证</th>
+                <th>石油体积</th>
+                <th>登记日期</th>
+                <th>鹤位名称</th>
+                <th>油罐名称</th>
+                <th>厂区名称</th>
+                <th>订单执行状态</th>
+                <th>操作的员工</th>
+                <th>预定时间</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+              </tr>
+          </thead>
+
+          <tbody id="form1">
+
+          </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script>
+    $(document).ready(function(){
+        $("#form").hide();
+        $("#formchose").hide();
+   })
+
+    //填写订单函数
+    function  freeoilpipe(){
+
+        //$(document).ready(function(){
+        $.ajax({
+           url : "http://127.0.0.1:8000/freeoilpipe",//请求地址
+            dataType : "JSON",//数据格式
+            type : "POST",//请求方式
+           async : false,//是否异步请求
+            data: "{" +
+            "\"cus_phone\":\""+$("#cus_phone").val()+"\","+
+            "\"cus_cnumber\":\""+$("#cNumber").val()+"\","+
+            "\"cus_idnumber\":\""+$("#INumber").val()+"\","+
+            "\"oil_val\":\""+$("#volume").val()+"\","+
+            "\"t_date\":\""+$("#date").val()+"\","+
+            "\"oil_type\":\""+$("#sore").val()+
+            "\"}",
+           success : function(data) { //如何发送成功
+                 console.log(data);
+                $("#submitform").hide();
+                $("#form").hide();
+               $("#formchose").show();
+                 result = data;
+                 htmltext = '';
+                 for (i = 0; i < result.length; i++) {
+                     a=i+1;
+                 htmltext = htmltext +
+                 "<tr>" +
+                 "<th><input name="+"\"chose\""+" type="+"\"radio\""+" value="+"\""+a+"\"></th>" +
+                 "<th>" +"油罐"+ result[i].area_name + "</th>" +
+                 "<th>" +"总阀"+ result[i].oilcan_name + "</th>" +
+                 "<th>" +"鹤位"+ result[i].oilpipe_name + "</th>" +
+                 "<th>" + result[i].price + "</th>" +
+                   "</tr>"
+                 }
+                 $("#choseform").html(htmltext);
+
+            }
+
+        });
+
+    }
+//订单二次选择，返回总订单函数
+    function  functionchose(){
+            var val=$('input:radio[name="chose"]:checked').val();
+            if(val==null){
+                alert("请选择一条数据");
+                return false;
+            }
+            else{
+                var area = $('input:radio[name="chose"]:checked').parent().parent().children().eq(1).text();
+                var oilcan = $('input:radio[name="chose"]:checked').parent().parent().children().eq(2).text();
+                //var price = $('input:radio[name="chose"]:checked').parent().child().eq(4).text();
+                var oilpipe = $('input:radio[name="chose"]:checked').parent().parent().children().eq(3).text();
+                console.log(oilpipe);
+               var area1 = area.match(/\d+/g);
+                var oilcan1 = oilcan.match(/\d+/g);
+                var oilpipe1 = oilpipe.match(/\d+/g);
+            }
+           $("#choseform").hide();
+           $("#form").show();
+
+
+        //$(document).ready(function(){
+        $.ajax({
+            url : "http://127.0.0.1:8000/makelist",//请求地址
+            dataType : "JSON",//数据格式
+            type : "POST",//请求方式
+            async : false,//是否异步请求
+            data: "{" +
+            "\"area_id\":\""+area1+"\","+
+            "\"oilcan_id\":\""+oilcan1+"\","+
+            "\"oilpipe_id\":\""+oilpipe1+
+            "\"}",
+
+            success : function(data) { //如何发送成功
+                window.location.href='all_order.html'
+                /*
+                console.log(data);
+                $("#submitform").hide();
+                $("#form").show();
+                $("#formchose").hide();
+                result = data;
+                htmltext = '';
+                for (i = 0; i < result.length; i++) {
+                    htmltext = htmltext +
+                            "<tr>" +
+                            "<th>" + result[i].id + "</th>" +
+                            "<th>" + result[i].phone + "</th>" +
+                            "<th>" + result[i].car + "</th>" +
+                            "<th>" + result[i].id_card+ "</th>" +
+                            "<th>" + result[i].volumn + "</th>" +
+                            "<th>" + result[i].reg_time + "</th>" +
+                            "<th>" + result[i].oilpipe_id + "</th>" +
+                            "<th>" + result[i].oilcan_id + "</th>" +
+                            "<th>" + result[i].area_id + "</th>" +
+                            "<th>" + result[i].statu + "</th>" +
+                            "<th>" + result[i].sta + "</th>" +
+                            "<th>" + result[i].ord_time + "</th>" +
+                            "<th>" + result[i].st_time + "</th>" +
+                            "<th>" + result[i].fi_time + "</th>" +
+                            "</tr>"
+
+                }
+                $("#form1").html(htmltext);
+                */
+            }
+
+        });
+
+    }
+
+
+
+    $(document).ready(function(){
+        var customerId=sessionStorage.customerId;
+        if (customerId == undefined) {
+            alert("请先登录！");
+            window.location.href="../Public/login.html";
+        }
+
+    })
+
+
+</script>
+</html>

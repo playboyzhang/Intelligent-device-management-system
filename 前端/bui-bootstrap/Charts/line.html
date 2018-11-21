@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/ca.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script>  -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Js/echarts.js"></script>
+    <script type="text/javascript" src="../Js/laydate.js"></script>
+</head>
+
+<body style=" background-color: #e4ebf4;">
+
+    <div>
+        <form class="form-inline definewidth m20" action="index.html" method="get">
+            <div class="form-group row" style="padding-left:20px ;">
+
+                <!--
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">油罐名称　</span>
+                <input type="text" class="form-control"  name="area" id="area_name" placeholder="请输入油罐" aria-describedby="basic-addon1">
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">总阀名称　</span> <input type="text" class="form-control" name="oilcan" id="oilcan_name" placeholder="请输入总阀" aria-describedby="basic-addon1">
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">鹤位名称　</span> <input type="text" class="form-control" name="oilpipe" id="oilpipe_name" placeholder="请输入鹤位" aria-describedby="basic-addon1">
+                -->
+
+                    <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:-30px;top:20px;">　油罐名称　</span>
+                    <select id="area_name" style="width:120px;position:relative;left:-30px;top:20px;">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:0px;top:20px;">　总阀名称　</span>
+                <select id="oilcan_name" style="width:120px;position:relative;left:0px;top:20px;">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:30px;top:20px;">　鹤位名称　</span>
+                <select id="oilpipe_name" style="width:120px;position:relative;left:30px;top:20px;">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>13</option>
+                    <option>14</option>
+                    <option>15</option>
+                    <option>16</option>
+                </select>
+                <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:60px;top:20px;">查看日期　　</span>
+                <input type="text" placeholder="请输入日期" class="laydate-icon " style="font-size: 20px;position:relative;left:60px;top:20px;" id="date" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>
+                <button type="button" onclick="getline()" class="btn btn-info" style="position:relative;left:1070px;top:40px;float:left">查询</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="box" style="width: 1000px; height:600px;"></div>
+    <script>
+        //折线图数据定义
+        var dataStime = [];
+        var dataVal= [];
+
+        //获取从后端传输的数据
+        function getline() {
+            $.ajax({
+                async: false,
+                type: "POST",
+                data: "{" +
+                "\"area_name\":\"" + $("#area_name option:selected").text() + "\"," +
+                "\"oilcan_name\":\"" + $("#oilcan_name option:selected").text() + "\"," +
+                "\"date_time\":\"" + $("#date ").val() + "\"," +
+                "\"oilpipe_name\":\"" + $("#oilpipe_name option:selected").text() +
+                "\"}",
+                dataType: "JSON",
+                url: "http://127.0.0.1:8000/line",
+                success: function (res) { //如何发送成功
+                    console.log(res);
+                    var firstDeviceId = res[0].device_id;
+                    var test = [];
+                    if(res.length==0){
+                        alert("没有数据！")
+                        return false;
+                    }else{
+                    for (var i = 0; i < res.length; i++) {
+                        dataStime.push(res[i].stime);
+                        if (res[i].device_id === firstDeviceId) {
+                            test.push(res[i].val);
+                            dataStime.push(res[i].stime);
+
+                        } else {
+                            dataVal.push(test);
+                            test = [];
+                            firstDeviceId = res[i].device_id;
+                            test.push(res[i].val);
+                        }
+                    }
+                    dataVal.push(test);
+                    console.log(dataVal);
+                }}
+            });
+
+            //去重函数
+            function removeDuplicatedItem(ar) {
+                     var ret = [];
+                    for (var i = 0;i<ar.length;i++) {
+                            if (ret.indexOf(ar[i]) === -1) {
+                                ar[i]=ar[i].substr(ar[i].length - 8);
+                                ret.push(ar[i]);
+                                 }
+                         }
+                     return ret;
+                 }
+            dataStime=removeDuplicatedItem(dataStime);
+            var  set= new Set(dataStime);
+            datay=Array.from(set);
+            console.log(datay);
+            datay=datay.slice(-7);
+            dataVal=dataVal.slice(-7);
+
+
+            // 获取到这个DOM节点，然后初始化
+            var myChart = echarts.init(document.getElementById("box"));
+
+            // option 里面的内容基本涵盖你要画的图表的所有内容
+            var option = {
+                title: {
+                    text: '设备历史曲线'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['鹤位温度计', '总阀温度计', '液压计', '流量计']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: datay
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:'鹤位温度计',
+                        type:'line',
+                        stack: '总量',
+                        data:dataVal[0],
+                        smooth: true
+                    },
+                    {
+                        name:'总阀温度计',
+                        type:'line',
+                        stack: '总量',
+                        data:dataVal[1],
+                        smooth: true
+                    },
+                    {
+                        name:'液压计',
+                        type:'line',
+                        stack: '总量',
+                        data:dataVal[2],
+                        smooth: true
+                    },
+                    {
+                        name:'流量计',
+                        type:'line',
+                        stack: '总量',
+                        data:dataVal[3],
+                        smooth: true
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option, true);
+       }
+
+            $(document).ready(function () {
+                var customerId = sessionStorage.customerId;
+                if (customerId == undefined) {
+                    alert("请先登录！");
+                    window.location.href = "../Public/login.html";
+                }
+            })
+
+    </script>
+</body>
+
+</html>

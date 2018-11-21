@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+
+
+    <!--时间样式-->
+    <link rel="stylesheet" type="text/css" href="../Css/ca.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script> -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.min.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-export.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-zh-CN.min.js"></script>
+
+
+
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Public/ExcelJS.js"></script>
+    <!--时间js-->
+    <script type="text/javascript" src="../Js/laydate.js"></script>
+    <title>订单列表</title>
+</head>
+<body style=" background-color: #e4ebf4;">
+
+        <div class="form-group row" style="padding:0px 0px 20px;">
+            <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:85px;top:20px;">　员工名称　</span>
+            <input type="text" id="staff_name"    placeholder="请输入员工名称" value="" style="width:200px;position:relative;left:85px;top:20px;">
+            <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:150px;top:20px;">　客户手机号　</span>
+            <input type="text" id="cus_phone"    placeholder="请输入客户信息" value="" style="width:200px;position:relative;left:150px;top:20px;">
+
+
+            <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:250px;top:20px;">　开始时间　</span>
+            <input type="text" class="laydate-icon " onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly style="width:200px;position:relative;left:250px;top:20px;"  id="be_time" placeholder="请输入时间" aria-describedby="basic-addon1">
+
+        </div>
+        <div class="form-group row" style="padding:0px 0px 5px;">
+            <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:85px;top:5px;">　结束时间　</span>
+            <input type="text" class="laydate-icon " onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly style="width:200px;position:relative;left:85px;top:5px;" id="fi_time" placeholder="请输入时间" aria-describedby="basic-addon1">
+
+
+            <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:150px;top:5px;">　订单状态　</span>
+            <select id="state" style="width:200px;position:relative;left:170px;top:5px;">
+                <option></option>
+                <option>Done</option>
+                <option>waiting</option>
+                <option>Executing</option>
+            </select>
+        </div>　
+
+
+
+    <!----
+    <button type="button" onclick="functionchose()" class="btn btn-success" style="position:relative;left:-1000px;right:80px;top:80px;float:left">搜索</button>
+<button type="button" class="btn btn-info" value="导出EXCEL" onclick="method1('ta')" style="position:relative;left:80px;right:80px;top:50px;" >导出EXCEL</button>
+    <div style="position:relative;top:80px;">
+        <table class="table table-bordered table-hover definewidth m10" id="ta">
+            <thead>
+            <tr>
+                <th>订单ID</th>
+                <th>客户手机号</th>
+                <th>车牌号</th>
+                <th>身份证</th>
+                <th>石油体积</th>
+                <th>登记日期</th>
+                <th>鹤位名称</th>
+                <th>总阀名称</th>
+                <th>油罐名称</th>
+                <th>订单执行状态</th>
+                <th>操作员工</th>
+                <th>预定时间</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+            </tr>
+            </thead>
+
+            <tbody id="form1">
+
+            </tbody>
+        </table>
+
+    </div>
+     -->
+    <table  id="table">
+
+    </table>
+
+
+
+
+</body>
+<script>
+
+
+    //查询函数
+    $(document).ready(function(){
+
+        $('#table').bootstrapTable({
+            ajax: function () {
+                $.ajax({
+                    async: false,
+                    type: "POST",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    data: "{" +
+                    "\"staff_name\":\""+$("#staff_name").val()+"\","+
+                    "\"cus_phone\":\""+$("#cus_phone").val()+"\","+
+                    "\"be_time\":\""+$("#be_time").val()+"\","+
+                    "\"fi_time\":\""+$("#fi_time").val()+"\","+
+                    "\"state\":\""+$("#state option:selected").text()+
+                    "\"}",
+                    dataType: "JSON",
+                    url: "http://127.0.0.1:8000/listshow",
+                    success: function (data) {
+                        console.log(data);
+                        $('#table').bootstrapTable('load', data);
+                    },
+                    error: function () {
+                        alert("错误");
+                    }
+                });
+            },
+
+            toolbar: '#toolbar',              //工具按钮用哪个容器
+            striped: true, //是否显示行间隔色
+            // cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true, //是否显示分页（*）
+            sortable: true, //是否启用排序
+            sortOrder: "asc", //排序方式
+            // sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页,并记录
+            // pageSize: rows, //每页的记录行数（*）
+            pageList: [5,10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false, //是否显示表格搜索
+            strictSearch: true,
+            showColumns: true, //是否显示所有的列（选择显示的列）
+            showRefresh: true, //是否显示刷新按钮
+            minimumCountColumns: 2, //最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            buttonsAlign: 'right',
+            uniqueId: "ID", //每一行的唯一标识，一般为主键列
+            showToggle: true, //是否显示详细视图和列表视图的切换按钮
+            cardView: false, //是否显示详细视图
+            detailView: false, //是否显示父子表
+            showExport: true,                    //是否显示导出
+            exportDataType: "all",            //basic', 'all', 'selected'.
+            columns: [{
+                field: 'id',
+                title: '订单ID'
+            }, {
+                field: 'phone',
+                title: '客户手机号'
+            }, {
+                field: 'car',
+                title: '车牌号'
+            }, {
+                field: 'id_card',
+                title: '身份证'
+            }, {
+                field: 'volumn',
+                title: '石油体积'
+            }, {
+                field: 'reg_time',
+                title: '登记日期'
+            }, {
+                field: 'oilpipe_id',
+                title: '鹤位名称',
+
+            }, {
+                field: 'oilcan_id',
+                title: '总阀名称',
+
+            }, {
+                field: 'area_id',
+                title: '油罐名称',
+            },{
+                field: 'statu',
+                title: '订单执行状态',
+            },{
+                field: 'sta',
+                title: '操作员工',
+            },{
+                field: 'ord_time',
+                title: '预定时间',
+            },{
+                field: 'st_time',
+                title: '开始时间',
+            },{
+                field: 'fi_time',
+                title: '结束时间',
+            },
+            ]
+        });
+        /*
+        //$(document).ready(function(){
+        $.ajax({
+            url : "http://47.100.13.76:8000/listshow",//请求地址
+            dataType : "JSON",//数据格式
+            type : "POST",//请求方式
+            async : false,//是否异步请求
+            data: "{" +
+            "\"staff_name\":\""+$("#staff_name").val()+"\","+
+            "\"cus_phone\":\""+$("#cus_phone").val()+"\","+
+            "\"be_time\":\""+$("#be_time").val()+"\","+
+            "\"fi_time\":\""+$("#fi_time").val()+"\","+
+            "\"state\":\""+$("#state option:selected").text()+
+            "\"}",
+            success : function(data) { //如何发送成功
+                console.log(data);
+                result = data;
+                htmltext = '';
+                for (i = 0; i < result.length; i++) {
+                    htmltext = htmltext +
+                        "<tr>" +
+                        "<th>" + result[i].id + "</th>" +
+                        "<th>" + result[i].phone + "</th>" +
+                        "<th>" + result[i].car + "</th>" +
+                        "<th>" + result[i].id_card+ "</th>" +
+                        "<th>" + result[i].volumn + "</th>" +
+                        "<th>" + result[i].reg_time + "</th>" +
+                        "<th>" + result[i].oilpipe_id + "</th>" +
+                        "<th>" + result[i].oilcan_id + "</th>" +
+                        "<th>" + result[i].area_id + "</th>" +
+                        "<th>" + result[i].statu + "</th>" +
+                        "<th>" + result[i].sta + "</th>" +
+                        "<th>" + result[i].ord_time + "</th>" +
+                        "<th>" + result[i].st_time + "</th>" +
+                        "<th>" + result[i].fi_time + "</th>" +
+                        "</tr>"
+
+                }
+                $("#form1").html(htmltext);
+            }
+        });
+    */
+    })
+
+    $(document).ready(function(){
+        var customerId=sessionStorage.customerId;
+        if (customerId == undefined) {
+            alert("请先登录！");
+            window.location.href="../Public/login.html";
+        }
+
+    })
+
+
+</script>
+</html>

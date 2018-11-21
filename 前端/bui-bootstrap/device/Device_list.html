@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-table.min.css" >
+
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script> -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.min.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-export.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Public/ExcelJS.js"></script>
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+        ul {
+            height: 100%;
+            list-style-type: none;
+        }
+
+        li {
+            line-height: 40px;
+            float: left;
+        }
+
+        .page_btn {
+            border-radius: 4px;
+            border: 1px solid #e5e9ef;
+            background: #fff;
+            margin-right: 10px;
+            text-align: center;
+            width: 38px;
+            height: 38px;
+            line-height: 8px;
+            margin-top: 6px;
+            outline: 0;
+        }
+
+        .page_btn:hover {
+            border: 1px solid #4f90fb;
+            color: #4f90fb;
+        }
+
+        span.pages_span {
+            margin-right: 10px;
+            width: 38px;
+            height: 38px;
+            position: relative;
+            top: 10px;
+        }
+    </style>
+</head>
+
+<body style=" background-color: #e4ebf4;">
+    <div style="left: 100px" class=" definewidth m20">
+        <!--
+        <button type="text" onclick="getList()" class="btn btn-primary" style="position:relative;left:50px;top:20px;float:left">查询</button>&nbsp;&nbsp;
+
+      <button type="button" class="btn btn-info" value="导出EXCEL" onclick="method1('tabl')" style="position:relative;left:80px;top:20px;float:left">导出EXCEL</button> -->
+
+    </div>
+
+    <table  id="tabl">
+
+
+
+    </table>
+
+
+
+    <!--更新设备模态框-->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        更新设备信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group row">
+                            <div class="col-sm-2 control-label">
+                                <label for="id">设备序号</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" id="id" name="id" value="" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="device_type" class="col-sm-3 control-label">设备种类</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="device_type" value="" id="device_type" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="device_id" class="col-sm-3 control-label">设备名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="device_id" value="" id="device_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="area_id" class="col-sm-3 control-label">油罐名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="area_id" value="厂区" id="area_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="oilcan_id" class="col-sm-3 control-label">总阀名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="oilcan_id" value="油罐" id="oilcan_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="oilpipe_id" class="col-sm-3 control-label">鹤位名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="oilpipe_id" value="鹤位" id="oilpipe_id">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" onclick="updateDevice()" class="btn btn-primary" data-dismiss="modal">
+                        提交
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal -->
+    </div>
+    <!-- 添加用户模态框（Modal） -->
+
+
+
+
+
+</body>
+
+</html>
+<script>
+    //查询设备
+    //getList();s
+    function AddFunctionAlty(value, row, index) {
+        console.log(value);
+        console.log(row);
+        console.log(index);
+        return [
+            "<button type=\"text\"  onclick=\"updateAction(" + row.id +
+            ")\" class=\"btn btn-info\" data-toggle=\"modal\">修改</button>"
+        ]
+    }
+
+    $(document).ready(function(){
+        $('#tabl').bootstrapTable({
+            url: 'http://127.0.0.1:8000/deviceList',
+            method: 'GET', //请求方式（*）
+            //toolbar: '#toolbar',              //工具按钮用哪个容器
+            striped: true, //是否显示行间隔色
+            // cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true, //是否显示分页（*）
+            sortable: true, //是否启用排序
+            sortOrder: "asc", //排序方式
+            // sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页,并记录
+            // pageSize: rows, //每页的记录行数（*）
+            pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+            search: false, //是否显示表格搜索
+            strictSearch: true,
+            showColumns: true, //是否显示所有的列（选择显示的列）
+            showRefresh: true, //是否显示刷新按钮
+            minimumCountColumns: 2, //最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            buttonsAlign: 'right',
+            uniqueId: "ID", //每一行的唯一标识，一般为主键列
+            showToggle: true, //是否显示详细视图和列表视图的切换按钮
+            cardView: false, //是否显示详细视图
+            detailView: false, //是否显示父子表
+            showExport: true,                    //是否显示导出
+            exportDataType: "all",            //basic', 'all', 'selected'.
+            columns: [{
+                field: 'id',
+                title: '序号'
+            }, {
+                field: 'device_type',
+                title: '设备种类'
+            }, {
+                field: 'area_id',
+                title: '设备名称'
+            }, {
+                field: 'oilcan_id',
+                title: '油罐名称'
+            }, {
+                field: 'oilpipe_id',
+                title: '总阀名称'
+            }, {
+                field: 'device_id',
+                title: '鹤位名称'
+            }, {
+                field: 'button',
+                title: '管理操作',
+                // events:updateAction(1)
+                formatter: AddFunctionAlty,
+            }]
+        });
+
+        // $.ajax({
+        //     async: false,
+        //     type: "GET",
+        //     url: "http://47.100.13.76:8000/deviceList",
+        //     success: function (data) {
+        //         console.log(data);
+        //         //result=JSON.parse(data);
+        //         result = data;
+        //         htmltext = '';
+        //         for (i = 0; i < result.length; i++) {
+        //             htmltext = htmltext +
+        //                 "<tr>" +
+        //                 "<th>" + result[i].id + "</th>" +
+        //                 "<th>" + result[i].device_type + "</th>" +
+        //                 "<th>" + result[i].device_id + "</th>" +
+        //                 "<th>" + result[i].area_id + "</th>" +
+        //                 "<th>" + result[i].oilcan_id + "</th>" +
+        //                 "<th>" + result[i].oilpipe_id + "</th>" +
+        //                 "<th>" +
+        //                 "<button type=\"text\"  onclick=\"updateAction(" + result[i].id +
+        //                 ")\" class=\"btn btn-info\" data-toggle=\"modal\">修改</button>" + "</th>" +
+        //                 "</tr>"
+        //         }
+        //         $("#form2").html(htmltext);
+        //     }
+        // });
+        console.log(result);
+    })
+
+
+    //更新设备
+    function updateDevice() {
+
+        $.ajax({
+            async: false,
+            type: "POST",
+            data: "{" +
+                "\"id\":\"" + $("#id").val() + "\"," +
+                "\"device_type\":\"" + $("#device_type").val() + "\"," +
+                "\"device_id\":\"" + $("#device_id").val() + "\"," +
+                "\"area_id\":\"" + $("#area_id").val() + "\"," +
+                "\"oilcan_id\":\"" + $("#oilcan_id").val() + "\"," +
+                "\"oilpipe_id\":\"" + $("#oilpipe_id").val() +
+                "\"}",
+            dataType: "JSON",
+            url: "http://127.0.0.1:8000/updateDevice",
+            success: function (data) {
+                console.log(data);
+                alert("更新成功！");
+            }
+        });
+        getList();
+    }
+
+    //更新动作
+    function updateAction(id) {
+        fillForm(id);
+        $("#updateModal").modal("show");
+    }
+
+
+    //填充表单
+    function fillForm(id) {
+        $.ajax({
+            async: false,
+            type: "get",
+            url: "http://127.0.0.1:8000/getDevice/" + id,
+            success: function (data) {
+                //alert("得到用户信息。");
+                //data = JSON.parse(data1);
+                console.log(data);
+
+                $("#id").val(data[0].id);
+                $("#id").attr("disabled", true);
+                $("#device_type").val(data[0].device_type);
+                $("#device_type").attr("disabled", true);
+                $("#device_id").val(data[0].device_id);
+                $("#device_id").attr("disabled", true);
+                $("#area_id").val(data[0].area_id);
+                $("#oilcan_id").val(data[0].oilcan_id);
+                $("#oilpipe_id").val(data[0].oilpipe_id);
+                console.log(data);
+            }
+        })
+    }
+
+    //获取具体数据条数的函数
+    function getPage() {
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "http://127.0.0.1:8000/page1",
+            success: function (data) {
+                console.log(data);
+                var num = data.datalen;
+                console.log(num);
+                return num;
+            }
+        });
+    }
+</script>

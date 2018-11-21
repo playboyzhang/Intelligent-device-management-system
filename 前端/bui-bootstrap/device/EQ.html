@@ -1,0 +1,629 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script>  -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <title>设备管理</title>
+</head>
+<body style=" background-color: #e4ebf4;">
+<div>
+    <!--
+      <div class="input-group col-md-2 "style="position:relative;left:50px;top:50px;float:left">
+         <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">油罐ID　</span> <input type="text" class="form-control"  name="area" id="area_name" placeholder="请输入油罐" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group col-md-2 " style="position:relative;left:100px;top:50px;float:left">
+          <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">总阀ID　</span> <input type="text" class="form-control" name="oilcan" id="oilcan_name" placeholder="请输入总阀" aria-describedby="basic-addon1">
+      </div>
+      <div class="input-group col-md-2 " style="position:relative;left:150px;top:50px;float:left">
+          <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">鹤位ID　</span> <input type="text" class="form-control" name="oilpipe" id="oilpipe_name" placeholder="请输入鹤位" aria-describedby="basic-addon1">
+      </div>
+      -->
+    <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:50px;top:20px;">　油罐名称　</span>
+    <select id="area_name" style="width:120px;position:relative;left:50px;top:20px;">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+    </select>
+    <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:100px;top:20px;">　总阀名称　</span>
+    <select id="oilcan_name" style="width:120px;position:relative;left:100px;top:20px;">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+    </select>
+    <span style="font-family: 'Adobe 宋体 Std L';font-size: 20px;position:relative;left:150px;top:20px;">　鹤位名称　</span>
+    <select id="oilpipe_name" style="width:120px;position:relative;left:150px;top:20px;">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option>16</option>
+    </select>
+
+
+
+      <button type="button" onclick="Polling()" class="btn btn-success" style="position:relative;left:1000px;top:20px;float:left">查询</button>
+      <!--<button type="button" onclick="Polling()" class="btn btn-success" style="position:relative;left:10px;top:100px;float:left">测试轮询</button>-->
+  </div>
+
+<!---图示---->
+<div>
+
+    <div style="position:absolute;left:900px;top:70px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-30px;top:10px;">出错</br></span>
+        <img src="../Images/红色.png"  style="width:40px;height:40px"/>
+    </div>
+    <div style="position:absolute;left:800px;top:70px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-30px;top:10px;">报警</br></span>
+        <img src="../Images/黄色.png"  style="width:40px;height:40px"/>
+    </div>
+    <div style="position:absolute;left:1000px;top:70px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-30px;top:10px;">正常</br></span>
+        <img src="../Images/绿色.png"  style="width:40px;height:40px"/>
+    </div>
+
+
+
+</div>
+
+<!--- 油罐 -->
+<div>
+      <div style="position:absolute;left:220px;top:220px;">
+          <B style="font-family: 'Adobe 宋体 Std L';font-size: large;position:absolute;left:50px;top:-30px;" id="oilcan"></B>
+          <img src="../Images/油罐.png" alt="油罐" style="width:200px;height:200px"/>
+      </div>
+      <div style="position:absolute;left:120px;top:250px;">
+          <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-50px;top:3px;">当前液压</br><span id="pie"></span></span>
+          <div onclick="pi()"><img src="../Images/thermometer.png" alt="液压计" style="width:50px;height:40px"/></div>
+      </div>
+    <div style="position:absolute;left:180px;top:250px;" id="pi1">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:180px;top:250px;" id="pi2">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:180px;top:250px;" id="pi3">
+        <img src="../Images/黄色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+
+      <div style="position:absolute;left:120px;top:350px;">
+          <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-50px;top:3px;">当前温度</br><span id="th1"></span></span>
+          <div onclick="th()"> <img src="../Images/thermometer.png" alt="温度计" style="width:50px;height:40px"/></div>
+      </div>
+    <div style="position:absolute;left:180px;top:350px;" id="pi4">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:180px;top:350px;" id="pi5">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:180px;top:350px;" id="pi6">
+        <img src="../Images/黄色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+
+</div>
+
+
+<!--油管道-->
+
+
+<div>
+    <div style="position:absolute;left:730px;top:220px;">
+        <B style="font-family: 'Adobe 宋体 Std L';font-size: large;position:absolute;left:20px;top:-30px;" id="pipe"></B>
+        <img src="../Images/油管.png" alt="管道" style="width:130px;height:200px;"/>
+    </div>
+    <div style="position:absolute;left:640px;top:250px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-50px;top:3px;">当前温度</br><span id="th2"></span></span>
+        <div onclick="th()"><img src="../Images/thermometer.png" alt="温度计1" style="width:50px;height:40px "  /></div>
+    </div>
+    <div style="position:absolute;left:700px;top:250px;" id="pi7">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:700px;top:250px;" id="pi8">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:700px;top:250px;" id="pi9">
+        <img src="../Images/黄色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:640px;top:350px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-50px;top:3px;">当前流量</br><span id="flo"></span></span>
+        <div onclick="fl()"> <img src="../Images/流量.png" alt="流量计" style="width:40px;height:40px"/></div>
+    </div>
+    <div style="position:absolute;left:700px;top:350px;" id="pi10">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:700px;top:350px;" id="pi11">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:700px;top:350px;" id="pi12">
+        <img src="../Images/黄色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+
+    <div style="position:absolute;left:900px;top:250px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:60px;top:5px;width:80px;">
+              是否接地</br>　<span style="color:red" id="gnd"></span></span>
+        <img src="../Images/接地.jpg" alt="接地" style="width:40px;height:40px"/>
+    </div>
+    <div style="position:absolute;left:1030px;top:250px;" id="pi13">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:1030px;top:250px;" id="pi14">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:900px;top:350px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:60px;top:5px;width:80px;">
+              是否漏油</br>　<span style="color:red" id="oil_leak"></span></span>
+        <img src="../Images/漏油.png" alt="是否漏油" style="width:40px;height:40px"/>
+    </div>
+    <div style="position:absolute;left:1030px;top:350px;" id="pi15">
+        <img src="../Images/红色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+    <div style="position:absolute;left:1030px;top:350px;" id="pi16">
+        <img src="../Images/绿色.png" style="width:35px;height:35px;left:-40px;top:3px;"/>
+    </div>
+
+</div>
+
+
+
+
+<!--设备温度计属性模态框-->
+<div class="modal fade" id="th"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" >
+                    温度计属性
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+
+                    <div class="form-group row">
+                        <label for="ma_v" class="col-sm-3 control-label">最大值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v" value="" id="ma_v"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_v" class="col-sm-3 control-label">最小值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_v" value="" id="mi_v"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ma_w" class="col-sm-3 control-label">报警上限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v" value="" id="ma_w">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_w" class="col-sm-3 control-label">报警下限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_w" value="" id="mi_w">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!--设备液压计属性模态框-->
+<div class="modal fade" id="pi"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" >
+                    液压计属性
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+
+                    <div class="form-group row">
+                        <label for="ma_v1" class="col-sm-3 control-label">最大值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v1" value="" id="ma_v1"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_v1" class="col-sm-3 control-label">最小值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_v1" value="" id="mi_v1"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ma_w1" class="col-sm-3 control-label">报警上限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v1" value="" id="ma_w1">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_w1" class="col-sm-3 control-label">报警下限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_w1" value="" id="mi_w1">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+
+
+<!--设备流量计属性模态框-->
+<div class="modal fade" id="fl"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" >
+                    流量计属性
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+
+                    <div class="form-group row">
+                        <label for="ma_v2" class="col-sm-3 control-label">最大值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v2" value="" id="ma_v2"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_v2" class="col-sm-3 control-label">最小值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_v2" value="" id="mi_v2"
+                                   placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ma_w2" class="col-sm-3 control-label">报警上限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="ma_v2" value="" id="ma_w2">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="mi_w2" class="col-sm-3 control-label">报警下限</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="mi_w2" value="" id="mi_w2">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script>
+
+
+
+    //将指示灯隐藏
+    $(document).ready(function(){
+        $("#pi1").hide();
+        $("#pi2").hide();
+        $("#pi3").hide();
+        $("#pi4").hide();
+        $("#pi5").hide();
+        $("#pi6").hide();
+        $("#pi7").hide();
+        $("#pi8").hide();
+        $("#pi9").hide();
+        $("#pi10").hide();
+        $("#pi11").hide();
+        $("#pi12").hide();
+        $("#pi13").hide();
+        $("#pi14").hide();
+        $("#pi15").hide();
+        $("#pi16").hide();
+
+    })
+    //var th1=0;
+    //var th2=0;
+    //var flo=0;
+    //var oil_leak=0;
+    //var gnd=0;
+    //var pie=0;
+    var oilleak1='';
+    var gnd1='';
+//根据条件获取设备数据
+    function  getEquipment(){
+        $("#pi1").hide();
+        $("#pi2").hide();
+        $("#pi3").hide();
+        $("#pi4").hide();
+        $("#pi5").hide();
+        $("#pi6").hide();
+        $("#pi7").hide();
+        $("#pi8").hide();
+        $("#pi9").hide();
+        $("#pi10").hide();
+        $("#pi11").hide();
+        $("#pi12").hide();
+        $("#pi13").hide();
+        $("#pi14").hide();
+        $("#pi15").hide();
+        $("#pi16").hide();
+    //$(document).ready(function(){
+        if($("#area_name").val()==""&&$("#oilcan_name").val()==""&&$("#oilpipe_name").val()==""){//判断两个均不为空（其他判断规则在其输入时已经判断）
+            alert("查询条件不能为空！")
+            return false;
+        }else{//以上均符合要求，则可进行查询
+        $.ajax({
+            async: false,
+            type: "POST",
+            data: "{" +
+            "\"area_name\":\"" + $("#area_name").val() + "\",\"" +
+            "oilcan_name\":\"" + $("#oilcan_name").val() + "\",\"" +
+            "oilpipe_name\":\"" + $("#oilpipe_name").val() +
+            "\"}",
+            dataType: "JSON",
+            url: "http://127.0.0.1:8000/getEquipment",
+            success : function(data) { //如何发送成功
+                console.log(data);
+                for (var i=0; i<data.length;i++) {
+                    switch (data[i].device_id) {//判断是哪种类型的设备，将数据填入对应的设备
+                        case 'thermometer' :
+                            if (data[i].device_type === 17 || data[i].device_type === 35||data[i].device_type === 53||data[i].device_type === 71) {//如果是总阀上的温度计传值到th1
+                                var th1 = data[i].device_val;
+                                console.log(th1);
+                                if (data[i].device_mode === "Warning")
+                                {$("#pi6").show(); }
+                                if (data[i].device_mode === "Normal")
+                                {$("#pi4").show(); }
+                                if (data[i].device_mode === "Error")
+                                {$("#pi5").show(); }
+                            }else {//鹤位上的传值到th2
+                                var th2 = data[i].device_val;
+                                console.log(th2);
+                                if (data[i].device_mode === "Warning")
+                                {$("#pi9").show(); }
+                                if (data[i].device_mode === "Normal")
+                                {$("#pi7").show(); }
+                                if (data[i].device_mode === "Error")
+                                {$("#pi8").show(); }
+                            }
+                            break;
+                        case 'flowmeter' :
+                            var flo = data[i].device_val;
+                            //$("#flo").text(flo+"L");
+                            console.log(flo);
+                            if (data[i].device_mode === "Warning")
+                            {$("#pi12").show(); }
+                            if (data[i].device_mode === "Normal")
+                            {$("#pi10").show(); }
+                            if (data[i].device_mode === "Error")
+                            {$("#pi11").show(); }
+                            break;
+                        case  'oilleak' :
+                            var oil_leak = data[i].device_val;
+                            //$("#oil_leak").text(oil_leak);
+                            console.log(oil_leak);
+                            if (oil_leak === 1) {
+                                oilleak1 = '是';
+                            }
+                            else {
+                                oilleak1 = '否';
+                            }
+                            if (data[i].device_mode === "Normal")
+                            {$("#pi16").show(); }
+                            if (data[i].device_mode === "Error")
+                            {$("#pi15").show(); }
+                            break;
+                        case 'gnd':
+                            var gnd = data[i].device_val;
+                            //$("#gnd").text(gnd);
+                            console.log(gnd);
+                            if (gnd === 1) {
+                                gnd1 = '是';
+                            }
+                            else {
+                                gnd1 = '否';
+                            }
+                            if (data[i].device_mode === "Normal")
+                            {$("#pi14").show(); }
+                            if (data[i].device_mode === "Error")
+                            {$("#pi13").show(); }
+                            break;
+                        case 'piezometer' :
+                            var pie = data[i].device_val;
+                            //$("#pie").text(pie+"Kpa");
+                            console.log(pie);
+                            if (data[i].device_mode === "Warning")
+                            {$("#pi3").show(); }
+                            if (data[i].device_mode === "Normal")
+                            {$("#pi1").show(); }
+                            if (data[i].device_mode === "Error")
+                            {$("#pi2").show(); }
+                            break;
+                    }
+                }
+                console.log(th2);
+                //var pie = data[0].device_val;
+                $("#pie").text(pie+"Kpa");
+                //油罐液压
+                //var th1 = data[3].device_val;
+                $("#th1").text(th1+"°C");
+                //油罐温度
+                //var  th2 = data[2].device_val;
+                $("#th2").text(th2+"°C");
+                //油管温度
+                //var flo = data[1].device_val;
+                $("#flo").text(flo+"L");
+                //油管流量
+                //var gnd = data[5].device_val;
+                $("#gnd").text(gnd1);
+                //是否 接地赋值
+                //var oil_leak = data[4].device_val;
+                $("#oil_leak").text(oilleak1);
+                //是否漏油
+    }
+    });
+}}
+//轮询函数
+var startPolling = true;
+var interval;
+function Polling() {
+    startPolling = !startPolling;
+    alert(startPolling);
+    if (!startPolling) {
+        getEquipment();
+        interval = setInterval("getEquipment()", 5000); //设置轮询时间
+    } else {
+        clearInterval(interval);
+    }
+}
+
+
+//设备属性
+    //温度计
+    //更新动作
+    function th(){
+        fillForm1();
+        $("#th").modal("show");
+    }
+
+    //填充表单
+    function  fillForm1() {
+        $.ajax({
+            async:false,
+            type:"get",
+            url:"http://127.0.0.1:8000/th",
+            success:function (data1) {
+                data=data1;
+                console.log(data);
+
+                $("#ma_v").val(data[0].ma_v);
+                //$("#id1").attr("disabled",true);
+                $("#mi_v").val(data[0].mi_v);
+                $("#ma_w").val(data[0].ma_w);
+                $("#mi_w").val(data[0].mi_w);
+
+                console.log(data);
+            }
+        })
+
+    }
+    //液压计
+    //更新动作
+    function pi(){
+        fillForm2();
+        $("#pi").modal("show");
+    }
+
+    //填充表单
+    function  fillForm2() {
+        $.ajax({
+            async:false,
+            type:"get",
+            url:"http://127.0.0.1:8000/pi",
+            success:function (data1) {
+                data=data1;
+                console.log(data);
+
+                $("#ma_v1").val(data[0].ma_v);
+                //$("#id1").attr("disabled",true);
+                $("#mi_v1").val(data[0].mi_v);
+                $("#ma_w1").val(data[0].ma_w);
+                $("#mi_w1").val(data[0].mi_w);
+
+                console.log(data);
+            }
+        })
+
+    }
+
+
+    //流量计
+    //更新动作
+    function fl(){
+        fillForm3();
+        $("#fl").modal("show");
+    }
+
+    //填充表单
+    function  fillForm3() {
+        $.ajax({
+            async:false,
+            type:"get",
+            url:"http://127.0.0.1:8000/fl",
+            success:function (data1) {
+                data=data1;
+                console.log(data);
+
+                $("#ma_v2").val(data[0].ma_v);
+                //$("#id1").attr("disabled",true);
+                $("#mi_v2").val(data[0].mi_v);
+                $("#ma_w2").val(data[0].ma_w);
+                $("#mi_w2").val(data[0].mi_w);
+
+                console.log(data);
+            }
+        })
+
+    }
+
+
+
+
+
+
+$(document).ready(function(){
+        var customerId=sessionStorage.customerId;
+        if (customerId == undefined) {
+            alert("请先登录！");
+            window.location.href="../Public/login.html";
+        }
+
+    })
+</script>
+</html>

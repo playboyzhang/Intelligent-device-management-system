@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Public/ExcelJS.js"></script>
+
+
+
+    <style type="text/css">
+        body {
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+                float: none;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+
+
+    </style>
+</head>
+<body style=" background-color: #e4ebf4;">
+<div style="left: 30px" class=" definewidth m20">
+    <button type="text" onclick="getList()" class="btn btn-primary">查询</button>&nbsp;&nbsp;
+    <button  type="button" class="btn btn-success" data-toggle="modal" data-target="#addModal" >
+        新增用户
+    </button>
+    <button type="button" class="btn btn-info" value="导出EXCEL" onclick="method1('ta')" >导出EXCEL</button>
+</div>
+
+<table class="table table-bordered table-hover definewidth m10" id="ta">
+    <thead>
+    <tr>
+        <th>用户id</th>
+        <th>账号</th>
+        <th>用户名称</th>
+        <th>密码</th>
+        <th>联系方式</th>
+        <th>角色种类</th>
+
+        <th style="width: 200px">用户添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody id="form1">
+
+    </tbody>
+</table>
+<!--新增用户模态框-->
+<div class="modal fade" id="addModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    新增用户
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+                <div class="form-group row">
+                    <label for="account" class="col-sm-3 control-label">账户名</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="account" value="" id="account"
+                               placeholder="">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-3 control-label">用户姓名</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name" value="" id="name">
+                    </div>
+                </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-3 control-label">密码</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" name="password" value="" id="password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phonenum" class="col-sm-3 control-label">联系方式</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="phonenum" value="" id="phonenum">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="role_type" class="col-sm-3 control-label">角色种类</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="role_type" value="" id="role_type">
+                        </div>
+                    </div>
+
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+            </button>
+            <button type="button" onclick="addUser()" class="btn btn-primary" data-dismiss="modal">
+                提交
+            </button>
+        </div>
+    </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>    <!-- 添加用户模态框（Modal） -->
+
+<!--更新用户模态框-->
+<div class="modal fade" id="updateModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" >
+                    更新用户信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+
+                            <div class="form-group row">
+                                <label for="id1" class="col-sm-3 control-label">ID</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="id1" value="" id="id1"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="account1" class="col-sm-3 control-label">账户名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="account1" value="" id="account1"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="name1" class="col-sm-3 control-label">用户姓名</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="name1" value="" id="name1">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="password1" class="col-sm-3 control-label">密码</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control" name="password1" value="" id="password1">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="phonenum1" class="col-sm-3 control-label">联系方式</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="phonenum1" value="" id="phonenum1">
+                                </div>
+                            </div>
+                    <!--
+                            <div class="form-group row">
+                                <label for="area_no1" class="col-sm-3 control-label">厂区名称</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="area_no1" value="" id="area_no1">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="role_type1" class="col-sm-3 control-label">角色种类</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="role_type1" value="" id="role_type1">
+                                </div>
+                            </div>
+                    -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" onclick="updateUser()" class="btn btn-primary" data-dismiss="modal">
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>    <!-- 添加用户模态框（Modal） -->
+
+
+
+</body>
+</html>
+<script>
+    // function del(id)
+    // {
+    //     if(confirm("确定要删除吗？"))
+    // {
+    //         var url = "index.html";
+    //         window.location.href=url;
+    //     }
+    // }
+    //查询用户
+    //getList();
+    function getList(){
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "http://127.0.0.1:8000/userList",
+            success: function (data) {
+                console.log(data);
+                //result=JSON.parse(data);
+                result=data;
+                htmltext='';
+                for(i=0;i<result.length;i++) {
+                    htmltext=htmltext +
+                        "<tr>"+
+                        "<th>"+result[i].id+"</th>"+
+                        "<th>"+result[i].account+"</th>"+
+                        "<th>"+result[i].name+"</th>"+
+                        "<th>"+result[i].password+"</th>"+
+                        "<th>"+result[i].phonenum+"</th>"+
+                        "<th>"+result[i].role_type+"</th>"+
+                        "<th>"+result[i].staff_date+"</th>"+
+                        "<th>"+"<button type=\"text\" onclick=\"deleteid("+result[i].id+")\" class=\"btn btn-danger\">删除</button>"+"&nbsp&nbsp"+
+                            "<button type=\"text\"  onclick=\"updateAction("+result[i].id+")\" class=\"btn btn-info\" data-toggle=\"modal\">修改</button>"+"</th>"
+                        +"</tr>"
+                }
+                $("#form1").html(htmltext);
+            }
+        });
+        console.log(result);
+    }
+
+
+    //删除用户
+    function deleteid(id){
+        $.ajax({
+            async:false,
+            type: "GET",
+            url: "http://127.0.0.1:8000/deleteUser/"+id,
+            success:function(){
+                console.log("删除成功！");
+            }
+        })
+        getList();
+    }
+    //添加用户
+    function addUser() {
+        $.ajax({
+            async : false,
+            type: "POST",
+            data:"{"+
+                "\"account\":\""+$("#account").val()+"\","+
+                "\"name\":\""+$("#name").val()+"\","+
+                "\"phonenum\":\""+$("#phonenum").val()+"\","+
+                "\"password\":\""+$("#password").val()+"\","+
+                "\"role_type\":\""+$("#role_type").val()+
+            "\"}",
+            dataType:"JSON",
+            url: "http://127.0.0.1:8000/addUser",
+            success: function (data) {
+            console.log(data);
+            alert("添加成功！");
+            }
+        });
+        getList();
+    }
+    //更新用户
+    function updateUser() {
+        $.ajax({
+            async : false,
+            type: "POST",
+            /*
+            data:{
+                  id:$("#id1").val(),
+                  account:$("#account1").val(),
+                  name:$("#name").val(),
+                 phonenum:$("#phonenum1").val(),
+                area_no:$("#area_no1").val(),
+                password:$("#password1").val(),
+                staff_type:$("#staff_type1")
+            },
+
+
+            "\"id\":\"" + $("#id1").val() + "\",\"" +
+            "account\":\"" + $("#account1").val() + "\",\"" +
+            "name\":\"" + $("#name1").val() + "\",\"" +
+            "phonenum\":\"" + $("#phonenum1").val() + "\",\"" +
+            "area_no\":\"" + $("#area_no").val() + "\",\"" +
+            "password\":\"" + $("#password1").val() + "\",\"" +
+            "staff_type\":\"" + $("#staff_type1").val() +
+            */
+            data:"{"+
+
+            "\"id\":\""+$("#id1").val()+"\","+
+            "\"account\":\""+$("#account1").val()+"\","+
+            "\"name\":\""+$("#name1").val()+"\","+
+            "\"phonenum\":\""+$("#phonenum1").val()+"\","+
+
+            "\"password\":\""+$("#password1").val()+"\","+
+            //"\"role_type\":\""+$("#role_type1").val()+
+            "\"}",
+
+            dataType:"JSON",
+            url: "http://127.0.0.1:8000/updateUser",
+            success: function (data) {
+                console.log(data);
+                alert("更新成功！");
+            }
+        });
+        getList();
+    }
+
+    //更新动作
+    function updateAction(id){
+        fillForm(id);
+        $("#updateModal").modal("show");
+    }
+
+
+    //填充表单
+    function  fillForm(id) {
+        $.ajax({
+            async:false,
+            type:"get",
+            url:"http://127.0.0.1:8000/getUser/"+id,
+            success:function (data1) {
+                //alert("得到用户信息。");
+                data=data1;
+                console.log(data);
+
+                $("#id1").val(data[0].id);
+                $("#id1").attr("disabled",true);
+                $("#account1").val(data[0].account);
+                $("#name1").val(data[0].name);
+                $("#phonenum1").val(data[0].phonenum);
+
+                $("#password1").val(data[0].password);
+                $("#role_type1").val(data[0].role_type);
+                console.log(data);
+            }
+        })
+
+    }
+    $(document).ready(function(){
+        var customerId=sessionStorage.customerId;
+        if (customerId == undefined) {
+            alert("请先登录！");
+            window.location.href="../Public/login.html";
+        }
+
+    })
+</script>

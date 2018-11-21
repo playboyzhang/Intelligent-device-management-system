@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <!--<script type="text/javascript" src="../Js/jquery.sorted.js"></script>  -->
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <title>设备管理</title>
+</head>
+<body style=" background-color: #e4ebf4;">
+<div>
+    <div class="input-group col-md-2 "style="position:relative;left:50px;top:50px;float:left">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">厂区ID　</span> <input type="text" class="form-control"  name="area" id="area_name" placeholder="请输入厂区" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group col-md-2 " style="position:relative;left:100px;top:50px;float:left">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">油罐ID　</span> <input type="text" class="form-control" name="oilcan" id="oilcan_name" placeholder="请输入油罐" aria-describedby="basic-addon1">
+    </div>
+    <div class="input-group col-md-2 " style="position:relative;left:150px;top:50px;float:left">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: large;">鹤位ID　</span> <input type="text" class="form-control" name="oilpipe" id="oilpipe_name" placeholder="请输入鹤位" aria-describedby="basic-addon1">
+    </div>
+    <button type="button" onclick="getEquipment()" class="btn btn-success" style="position:relative;left:200px;top:50px;float:left">搜索</button>
+</div>
+
+    <div style="position:absolute;left:150px;top:150px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size:small;position:absolute;left:-50px;top:10px;">当前流量</br><span id="flo"></span></span>
+        <img src="../Images/流量.png" alt="流量计" style="width:100px;height:100px"/>
+        <button type="button"  class="btn btn-success" style="position:absolute;right:-100px;top:10px;">下达指令</button>
+    </div>
+
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    更新流量计信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group row">
+                        <div class="col-sm-2 control-label">
+                            <label for="val" >当前值</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text"  id="val" name="val" value=""
+                                   placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="val1" class="col-sm-3 control-label">修改值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="val1" value="" id="val1"
+                                   placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="time" class="col-sm-3 control-label">提交时间</label>
+                        <div class="col-sm-9">
+                            <input type="time" class="form-control" name="time" value="" id="time">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" onclick="updateData()" class="btn btn-primary" data-dismiss="modal">
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+<script>
+    //更新指令
+    function updateData() {
+        $.ajax({
+            async : false,
+            type: "POST",
+            data:"{"+
+            "\"val\":\""+$("#val").val()+"\",\""+
+            "val1\":\""+$("#val1").val()+"\",\""+
+            "time\":\""+$("#time").val()+
+            "\"}",
+            dataType:"JSON",
+            url: "http://127.0.0.1:8000/updateUser",
+            success: function (data) {
+                console.log(data);
+                alert("更新成功！");
+            }
+        });
+        getList();
+    }
+
+
+
+
+
+    //获取当前流量计的值
+    function  getEquipment(){
+        //$(document).ready(function(){
+        $.ajax({
+            async: false,
+            type: "POST",
+            data: "{" +
+            "\"area_name\":\"" + $("#area_name").val() + "\",\"" +
+            "oilcan_name\":\"" + $("#oilcan_name").val() + "\",\"" +
+            "oilpipe_name\":\"" + $("#oilpipe_name").val() +
+            "\"}",
+            dataType: "JSON",
+            url: "http://127.0.0.1:8000/getEquipment",
+            success : function(data) { //如何发送成功
+
+                console.log(data);
+
+                var flo = data[0].flo;
+                $("#flo").text(flo+"L");
+                //油管流量
+
+            }
+
+        });
+    }
+    $(document).ready(function(){
+        var customerId=sessionStorage.customerId;
+        if (customerId == undefined) {
+            alert("请先登录！");
+            window.location.href="../Public/login.html";
+        }
+
+    })
+</script>
+</html>

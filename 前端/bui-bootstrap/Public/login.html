@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<title>login</title>
+<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+<!--必要样式-->
+<link rel="stylesheet" type="text/css" href="css/component.css" />
+<!--[if IE]>
+<script src="js/html5.js"></script>
+<![endif]-->
+</head>
+<body>
+		<div class="container demo-1">
+			<div class="content">
+				<div id="large-header" class="large-header">
+					<canvas id="demo-canvas"></canvas>
+					<div class="logo_box" >
+						<h3>智能设备管理系统</h3>
+						<form class="form-signin" method="post" action="../index.html">
+							<div class="input_outer">
+								<span class="u_user"></span>
+								<input name="logname" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
+							</div>
+							<div class="input_outer">
+								<span class="us_uer"></span>
+								<input name="logpass" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
+							</div>
+							<div class="mb2" onclick="confirm();"><h class="act-but submit"  style="color: #FFFFFF ">登  陆</h></div>
+
+
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!-- /container -->
+		<script type="text/javascript" src="../Js/jquery.js"></script>
+		<script type="text/javascript" src="../Js/jquery.sorted.js"></script>
+		<script type="text/javascript" src="../Js/bootstrap.js"></script>
+		<script type="text/javascript" src="../Js/ckform.js"></script>
+		<script type="text/javascript" src="../Js/common.js"></script>
+		<script src="js/TweenLite.min.js"></script>
+		<script src="js/EasePack.min.js"></script>
+		<script src="js/rAF.js"></script>
+		<script src="js/demo-1.js"></script>
+		<div style="text-align:center;">
+</div>
+	</body>
+<script>
+	function confirm(){
+		var tel=$("input[name=logname]").val();//获取页面中登录名和密码
+		var pwd=$("input[name=logpass]").val();
+		if(tel==""|| pwd==""){//判断两个均不为空（其他判断规则在其输入时已经判断）
+			alert("账户名和密码均不能为空！")
+			return false;
+		}else{//以上均符合要求，则调用登录esb接口
+			$.ajax({
+				url:'http://127.0.0.1:8000/land',//相对应的esb接口地址
+				type:'post',
+				data:"{"+"\"username\":\""+tel+"\",\""+"userpassword\":\""+pwd+"\"}",//向服务器（接口）传递的参数
+				success:function(data){//服务器（接口）返回来的数据
+					data1=$.parseJSON(data);
+					console.log(data1);
+					console.log(data1.id);//权限值
+					console.log(data1.session);
+					if(data1!=0){//如果返回来的信息说明提交的信息为正确的
+						var customerId = data1.id;//将数据中用户信息的ID赋值给变量
+						sessionStorage.customerId = customerId;//将变量存储到本地sessionStorage中，并且value为customerID
+						var customername = data1.account;//获取返回的用户名
+						sessionStorage.customername = customername;
+                        var session = data1.session;//获取返回的用户名
+                        sessionStorage.session = session;
+						window.location.href='../index.html';//正确登录后页面跳转至
+					}
+					else{//如果返回来的信息说明提供的信息为错误的
+						alert("登录失败，请检查账户和密码！");
+					}
+				}
+			})
+		}
+	}
+
+
+</script>
+</html>

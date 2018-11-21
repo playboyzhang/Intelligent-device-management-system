@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 引入echarts文件 -->
+    <script src="../Js/echarts.js"></script>
+    <script src="../Js/jquery.js"></script>
+</head>
+
+<body style=" background-color: #e4ebf4;">
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height:500px;width:1000px"></div>
+    <script type="text/javascript">
+        //数据定义
+        var datatime = [];
+        var datasum= [];
+        var testtype =['gasoline','dieseloil','qiyou','chaiyou'];
+            //$(document).ready(function () {
+                //获取从后台传输的数据
+                $.ajax({
+                    async: false,
+                    type: "GET",
+                    dataType: "JSON",
+                    url: "http://127.0.0.1:8000/columnar",
+                    success: function (data) {
+                        console.log(data);
+                        var testtime = data[0].oil_time;
+                        var demo=[0,0,0,0];
+                        for (var i = 0; i < data.length; i++) {
+                            datatime.push(data[i].oil_time)//把时间放到数组当做横坐标，后面需去重
+                            console.log(datatime);
+                            if(testtime === data[i].oil_time) {//根据时间，把每组时间的数据放到一个数组里
+                                for(j = 0;j <testtype.length;j++ )//判断是哪一种油
+                                {
+                                    if(testtype[j] === data[i].type)//如果是哪一种油就放到对应位置
+                                        demo[j]=data[i].sum;
+                                        console.log(demo[j]);
+                                }
+                            } else {
+                                datasum.push(demo);
+                                demo = [0, 0, 0, 0];
+                                testtime = data[i].oil_time;
+                                for(j = 0;j <testtype.length;j++ )
+                                {
+                                    if(testtype[j] === data[i].type)
+                                        demo[j]=data[i].sum;
+                                    console.log(demo[j]);
+                                }
+                            }
+                        }
+                        datasum.push(demo);
+                        console.log(datasum);
+                        /*
+                        for (i = 0; i < data.length; i++) {
+                            datax.push(data[i].oil_time);
+                            console.log(datax)
+                            datay.push(data[i].sum);
+                            console.log(datay)
+                        }
+                        */
+                    }
+                });
+            //})
+        //将纵坐标格式变为所需要的格式
+        var datay=[];
+        var shuju1=[];
+        var shuju2=[];
+        var shuju3=[];
+        var shuju4=[];
+        for(var i=0;i<datasum.length;i++)//取纵坐标后七组数据
+        {
+            shuju1.push(datasum[i][0]);
+            shuju2.push(datasum[i][1]);
+            shuju3.push(datasum[i][2]);
+            shuju4.push(datasum[i][3]);
+        }
+        shuju1=shuju1.slice(-7);
+        shuju2=shuju2.slice(-7);
+        shuju3=shuju3.slice(-7);
+        shuju4=shuju4.slice(-7);
+        function removeDuplicatedItem(ar) {//时间出重函数
+            var ret = [];
+            for (var i = 0, j = ar.length; i < j; i++) {
+                if (ret.indexOf(ar[i]) === -1) {
+                    ret.push(ar[i]);
+                }
+            }
+            return ret;
+        }
+        datatime=removeDuplicatedItem(datatime);
+        console.log(datatime);
+        datay=datatime.slice(-7);
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title : {
+                text: '最近七天加油量统计图',
+                //subtext: '加油量统计图'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:testtype
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : datay,
+                    axisLabel:{
+                        interval:0,//横轴信息全部显示
+                        rotate:-30,//-30度角倾斜显示
+                    }
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'gasoline',
+                    type:'bar',
+                    data:shuju1,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:'dieseloil',
+                    type:'bar',
+                    data:shuju2,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:'qiyou',
+                    type:'bar',
+                    data:shuju3,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:'chaiyou',
+                    type:'bar',
+                    data:shuju4,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+        // 判断登陆
+        $(document).ready(function () {
+            var customerId = sessionStorage.customerId;
+            if (customerId == undefined) {
+                alert("请先登录！");
+                window.location.href = "../Public/login.html";
+            }
+        })
+    </script>
+</body>
+
+</html>

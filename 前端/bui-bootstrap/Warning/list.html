@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../Css/ca.css" />
+    <script type="text/javascript" src="../Js/jquery.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.js"></script>
+    <script type="text/javascript" src="../Js/tableExport.min.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-export.js"></script>
+    <script type="text/javascript" src="../Js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script type="text/javascript" src="../Js/ckform.js"></script>
+    <script type="text/javascript" src="../Js/common.js"></script>
+    <script type="text/javascript" src="../Public/ExcelJS.js"></script>
+    <script type="text/javascript" src="../Js/laydate.js"></script>
+
+</head>
+<body style=" background-color: #e4ebf4;">
+
+
+
+<div class="form-inline definewidth m20"  >
+
+
+    <div  class="form-group row"   style="padding:0px 0px 20px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:0px;top:0px;">　设备种类　</span>
+        <select id="device_type" style="width:200px;position:relative;left:0px;top:0px;">
+            <option></option>
+            <option>thermometer</option>
+            <option>flowmeter</option>
+            <option>piezometer</option>
+            <option>oilleak</option>
+            <option>gnd</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:20px;top:0px;">　设备名称　</span>
+        <input type="text" id="device_name" name="device_description"   placeholder="请输入设备名称" value="" style="width:200px;position:relative;left:20px;top:0px;">
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:50px;top:0px;">　报警类型　</span>
+        <select id="mold" style="width:200px;position:relative;left:50px;top:0px;">
+            <option></option>
+
+            <option>Warning</option>
+            <option>Error</option>
+        </select>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div  class="form-group row"   style="padding:0px 0px 20px;">
+     <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:0px;top:0px;">　报警描述　</span>
+        <select id="desc" style="width:200px;position:relative;left:0px;top:0px;">
+            <option></option>
+
+            <option>oilleak</option>
+            <option>noGND</option>
+            <option>toolow</option>
+            <option>overtop</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:0px;top:0px;">　鹤位名称　</span>
+        <select id="oilpipe_id" style="width:200px;position:relative;left:0px;top:0px;">
+            <option></option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+        </select>
+        <span style="font-family: 'Adobe 宋体 Std L';font-size: 15px;position:relative;left:35px;top:0px;">　报警时间　</span>
+        <input type="text" placeholder="请输入日期" class="laydate-icon "  style="position:relative;left:35px;top:0px;" id="time" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" readonly>&nbsp;&nbsp;&nbsp;
+    </div>
+</div>
+<!---
+<button type="submit" onclick="Condition()" style="position:relative;left:50px;top:0px;" class="btn btn-primary">查询</button>
+--->
+<div>
+<table  id="table">
+</table>
+</div>
+
+
+
+
+</body>
+</html>
+
+<script>
+
+   //根据条件查询结果并获取数据
+   /*
+    function Condition() {
+        $.ajax({
+            async: false,
+            type: "POST",
+            data: "{" +
+            "\"device_type\":\"" + $("#device_type option:selected").text() + "\",\"" +
+            "device_name\":\"" + $("#device_name").val() + "\",\"" +
+            "mold\":\"" + $("#mold option:selected").text() + "\",\"" +
+            "desc\":\"" + $("#desc option:selected").text() + "\",\"" +
+            "oilpipe_id\":\"" + $("#oilpipe_id option:selected").text() + "\",\"" +
+            "time\":\"" + $("#time").val() +
+            "\"}",
+            dataType: "JSON",
+            url: "http://47.100.13.76:8000/getDangerData",
+            success: function (data) {
+                console.log(data);
+                result = data;
+                htmltext = '';
+                for (i = 0; i < result.length; i++) {
+                    htmltext = htmltext +
+                        "<tr>" +
+                        "<th>" + result[i].id + "</th>" +
+                        "<th>" + result[i].device_type + "</th>" +
+                        "<th>" + result[i].device_id+ "</th>" +
+                        "<th>" + result[i].device_name + "</th>" +
+                        "<th>" + result[i].value + "</th>" +
+                        "<th>" + result[i].mold + "</th>" +
+                        "<th>" + result[i].desc + "</th>" +
+                        "<th>" +"鹤位"+result[i].oilpipe_id + "</th>" +
+                        "<th>" + result[i].time + "</th>" +
+                        "</tr>"
+                }
+                $("#form1").html(htmltext);
+            }
+        });
+    }
+    */
+   $(document).ready(function() {
+       $('#table').bootstrapTable({
+           ajax: function () {
+               $.ajax({
+                   async: false,
+                   type: "POST",
+                   contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                   data: "{" +
+                   "\"device_type\":\"" + $("#device_type option:selected").text() + "\",\"" +
+                   "device_name\":\"" + $("#device_name").val() + "\",\"" +
+                   "mold\":\"" + $("#mold option:selected").text() + "\",\"" +
+                   "desc\":\"" + $("#desc option:selected").text() + "\",\"" +
+                   "oilpipe_id\":\"" + $("#oilpipe_id option:selected").text() + "\",\"" +
+                   "time\":\"" + $("#time").val() +
+                   "\"}",
+                   dataType: "JSON",
+                   url: "http://127.0.0.1:8000/getDangerData",
+                   success: function (data) {
+                       console.log(data);
+                       $('#table').bootstrapTable('load', data);
+                   },
+                   error: function () {
+                       alert("错误");
+                   }
+               });
+           },
+
+           //toolbar: '#toolbar',              //工具按钮用哪个容器
+           striped: true, //是否显示行间隔色
+           // cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+           pagination: true, //是否显示分页（*）
+           sortable: true, //是否启用排序
+           sortOrder: "asc", //排序方式
+           // sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+           pageNumber: 1, //初始化加载第一页，默认第一页,并记录
+           // pageSize: rows, //每页的记录行数（*）
+           pageList: [10, 25, 50, 100], //可供选择的每页的行数（*）
+           search: false, //是否显示表格搜索
+           strictSearch: true,
+           showColumns: true, //是否显示所有的列（选择显示的列）
+           showRefresh: true, //是否显示刷新按钮
+           minimumCountColumns: 2, //最少允许的列数
+           clickToSelect: true, //是否启用点击选中行
+           //height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+           buttonsAlign: 'right',
+           uniqueId: "ID", //每一行的唯一标识，一般为主键列
+           showToggle: true, //是否显示详细视图和列表视图的切换按钮
+           cardView: false, //是否显示详细视图
+           detailView: false, //是否显示父子表
+           showExport: true,                    //是否显示导出
+           exportDataType: "all",            //basic', 'all', 'selected'.
+           columns: [{
+               field: 'id',
+               title: '序号'
+           }, {
+               field: 'device_type',
+               title: '设备种类'
+           }, {
+               field: 'device_id',
+               title: '设备ID'
+           }, {
+               field: 'device_name',
+               title: '设备名称'
+           }, {
+               field: 'value',
+               title: '设备参数'
+           }, {
+               field: 'mold',
+               title: '报警类型'
+           }, {
+               field: 'desc',
+               title: '报警描述',
+
+           }, {
+               field: 'oilpipe_id',
+               title: '鹤位名称',
+
+           }, {
+               field: 'time',
+               title: '记录时间',
+           }]
+       });
+   })
+
+
+
+
+
+
+</script>

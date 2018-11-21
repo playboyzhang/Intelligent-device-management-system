@@ -1,0 +1,538 @@
+
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <title>智能设备管理系统</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+     <script type="text/javascript" src="assets/js/jquery-1.8.1.min.js"></script>
+     <script type="text/javascript" src="assets/js/bui-min.js"></script>
+     <script type="text/javascript" src="assets/js/common/main-min.js"></script>
+     <!--<script type="text/javascript" src="assets/js/config-min.js"></script>-->
+     <script type="text/javascript" src="Public/loginJS.js"></script>
+   <!--<link href="assets/css/dpl-min.css" rel="stylesheet" type="text/css" />-->
+  <!--<link href="assets/css/bui-min.css" rel="stylesheet" type="text/css" />-->
+   <!--<link href="assets/css/main-min.css" rel="stylesheet" type="text/css" />-->
+ </head>
+ <body style="height:200px">
+ <style>
+     a {
+         /*color: #000000;*/
+         text-decoration: none;
+     }
+
+     a:focus {
+         outline:none;
+     }
+
+     .container-fluid{padding: 0px;}
+
+     .main {
+         margin: 0 auto;
+         padding:0px;
+     }
+
+     .main_content {
+         width: 100%;
+         background-color: #e4ebf4;
+         float: left;
+         display: inline;
+         overflow: hidden;
+         margin-left:0;
+     }
+
+
+     .main_top{
+         float: left;
+         width: 100%;
+         height: 73px;
+         background-color: #fff;
+     }
+
+     .main_top_left{
+         float: left;
+         width: 50%;
+         margin: 14px 0 0 20px;
+         height: 55px;
+     }
+
+     .main_top_left img{
+         float: left;
+         height: 45px;
+     }
+
+     .main_top_left h2{
+         float: left;
+         font-size: 27px;
+         color: #6883a6;
+         vertical-align: middle;
+         display: inline-block;
+         font-weight: 400;
+         line-height: 30px;
+         margin-left: 10px;
+     }
+
+     .main_content_left {
+         min-height: 700px;
+         float: left;
+         display: inline;
+         /* background: #fcfcfc; */
+         background: #2f4a70;
+         overflow: hidden;
+         padding: 0px;
+         width:12%;
+     }
+     .main_content_left a:hover{
+         text-decoration: none;
+     }
+     .main_left_logo {
+
+         width: 100%;
+         height: 95px;
+         color: #fff;
+         font-size: 40px;
+         text-align: center;
+         line-height: 95px;
+         overflow: hidden;
+     }
+     .main_left_logo a{
+         color: #fff;
+         text-decoration: none;
+     }
+
+     .main_left_navi {
+         width: 100%;
+         height: auto;
+         float: left;
+         display: inline;
+         /* margin-top: 30px; */
+     }
+     .main_left_navi_home:first-child{
+         /* border-top: 1px solid #e7e7e8; */
+         border-top: 1px solid #506683;
+     }
+
+     .main_left_navi_home {
+         width: 100%;
+         height: 51px;
+         /* border-bottom: 1px solid #e7e7e8; */
+         border-bottom: 1px solid #506683;
+         cursor: pointer;
+     }
+     .main_left_navi_home_selected{
+         /* border-bottom: 3px solid #aeaeae; */
+         background-color:#c92a29;
+     }
+
+     .main_left_navi_home_font_unselected{
+         height: 51px;
+         line-height: 51px;
+         font-size: 16px;
+         /* color: #50585e; */
+         color: #939393;
+         margin-left: 10px;
+         display: inline;
+         float: left;
+     }
+     .main_left_navi_home_font_icon{
+         float: left;
+         margin-left: 20px;
+         margin-top: 13px;
+     }
+     .main_left_navi_home_font_icon img{
+         width: 23px;
+     }
+     .main_left_navi_home_font_go{
+         float: left;
+         margin-top: -36px;
+         margin-left: 130px;
+     }
+     .main_left_navi_home_font_selected a {
+         /* color: #7bbd4e; */
+         text-decoration: none;
+     }
+
+     .main_left_navi_subnav {
+         height: auto;
+         display:none;
+         cursor: pointer;
+     }
+     .main_left_navi_subnav:hover {
+         background: none;
+         color: #fff;
+     }
+
+
+     .main_left_navi a{
+         height: 44px;
+         line-height: 44px;
+         overflow: hidden;
+         float: left;
+         display: inline;
+         color: #fff;
+     }
+
+     .main_left_navi_home_selected a{
+         color:#fff;
+     }
+
+     .main_left_navi_subnav_href:hover {
+         color: #fff;
+         text-decoration: none;
+     }
+
+     .main_left_navi_subnav {
+         width: 100%;
+         height: 44px;
+         line-height: 44px;
+         overflow: hidden;
+     }
+
+     .main_left_navi_subnav_font_unselected a {
+         width: 74%;
+         padding-left: 60px;
+
+     }
+     .main_left_navi_subnav_font_unselected a:hover {
+         color: #fff;
+     }
+
+     .main_left_navi_subnav_font_selected {
+         /* background: #f7f7f8; */
+         color: #fff;
+         width: 100%;
+         height: 100%;
+     }
+
+     .main_left_navi_subnav_font_selected a {
+         color: #fff;
+
+     }
+     .main_right_header {
+         /* background-color: #eff3f3; */
+         /* height: 65px; */
+         height: 48px;
+         float: right;
+         display: inline;
+         color: #fff;
+         margin-top: 25px;
+         width: 40%;
+     }
+
+     .main_right_header a {
+         color: #333333;
+     }
+     .main_right_header_setting {
+         /* width: auto; */
+         width: 80px;
+         /* line-height: 20px; */
+         line-height: 16px;
+         float: right;
+         display: inline;
+         /* margin: 21px 15px 0 15px; */
+         padding: 13px 30px;
+         font-size: 14px;
+     }
+     .main_right_header_setting img {
+         margin-right: 6px;
+         margin-bottom: 2px;
+         display: inline;
+     }
+
+     .main_right_header_setting a {
+         /* font-size: 15px; */
+         /* color: #3c3c3c; */
+         color: #fff;
+     }
+     .main_right_header_user {
+         width: auto;
+         line-height: 28px;
+         float: right;
+         display: inline;
+         /* margin: 21px 0 0 0; */
+         padding: 7px 25px;
+         font-size: 14px;
+         /* color: #3c3c3c; */
+         color: #333333;
+     }
+
+     .main_right_header_user .portrait {
+         background-color: #ccc;
+         border-radius: 50%;
+         float: left;
+         height: 28px;
+         margin-right: 13px;
+         overflow: hidden;
+         width: 28px;
+     }
+
+     .main_content {
+         width: 100%;
+         background-color: #e4ebf4;
+         float: left;
+         display: inline;
+         overflow: hidden;
+         margin-left:0;
+     }
+     .main_content_right {
+         min-height: 700px;
+         float: right;
+         display: inline;
+         overflow: hidden;
+         padding:0px;
+         background-color: #e4ebf4;
+         width:88%;
+     }
+     .main_right_content {
+         width: 100%;
+         float: left;
+         display: inline;
+         overflow: hidden;
+     }
+     .line_right{
+         float: right;
+         width: 1px;
+         height: 15px;
+         background-color: #aaa;
+         margin-top: 15px;
+         display: inline;
+     }
+
+ </style>
+ <div class="container-fluid">
+  <div class="main">
+      <div class="main_content">
+          <div class="main_top">
+            <div class="main_top_left">
+         <img src="Images/log.jpg" style="width:50px;height:50px;">
+         <h2 style="position:relative;top:-20px;">智能设备管理系统</h2>
+     </div>
+            <div class="line_right"></div>
+            <div class="main_right_header">
+         <a href="Public/login.html" onclick = "deleteItem()">
+             <div class="main_right_header_setting">
+                 <img src="Images/icon_switch.png">
+                 退出
+             </div>
+         </a>
+         <div class="line_right"></div>
+         <div class="main_right_header_user">
+             您好，<span id="customername"></span>			</div>
+     </div>
+          </div>
+          <div class="main_content_left ">
+     <!-- <div class="main_left_logo"> -->
+     <!-- >a href="/">卡琪卡</a -->
+     <!-- </div> -->
+     <div class="main_left_navi main_left_navi_home_font_selected">
+         <div class="main_left_navi_home" id="a1">
+             <div class="main_left_navi_home_font_unselected nav-item-inner nav-order">
+                 <a href="/bui-bootstrap" param="39" haschild="1">设备管理</a>
+             </div>
+             <div class="main_left_navi_home_font_go">
+                 <img src="Images/go_icon.png">
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="39" style="display: block;" id="s1">
+             <div class="main_left_navi_subnav_font_unselected main_left_navi_subnav_font_selected">
+                 <a href="device/EQ.html">鹤位状况</a>
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="39" style="display: block;" id="s2">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="device/Device_list.html">设备清单</a>
+             </div>
+         </div>
+         <div class="main_left_navi_home" id="a2">
+             <div class="main_left_navi_home_font_unselected nav-item-inner nav-distribution">
+                 <a href="/bui-bootstrap" param="55" haschild="1">数据分析</a>
+             </div>
+             <div class="main_left_navi_home_font_go">
+                 <img src="Images/go_icon.png">
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="55" style="display: none;" id="s3">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Charts/historyList.html">历史数据</a>
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="55" style="display: none;" id="s4">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Charts/line.html">历史曲线分析</a>
+             </div>
+         </div>
+
+         <div class="main_left_navi_home" id="a3">
+             <div class="main_left_navi_home_font_unselected nav-item-inner nav-monitor" >
+                 <a href="/bui-bootstrap" param="51" haschild="1">报警处理</a>
+             </div>
+             <div class="main_left_navi_home_font_go">
+                 <img src="Images/go_icon.png">
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="51" style="display: none;" id="s5">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Warning/list.html">警告报表</a>
+             </div>
+         </div>
+         <div class="main_left_navi_home" id="a4">
+             <div class="main_left_navi_home_font_unselected nav-item-inner nav-package">
+                 <a href="/bui-bootstrap" param="57" haschild="1">订单管理</a>
+             </div>
+             <div class="main_left_navi_home_font_go">
+                 <img src="Images/go_icon.png">
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="57" style="display: none;" id="s6">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Order/all_order.html">创建订单</a>
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="57" style="display: none;" id="s7">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Order/order_list.html">订单列表</a>
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="57" style="display: none;" id="s8">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Charts/columnar.html">加油量统计</a>
+             </div>
+         </div>
+         <div class="main_left_navi_home" id="a5">
+             <div class="main_left_navi_home_font_unselected nav-item-inner nav-home">
+                 <a href="/bui-bootstrap" param="16" haschild="1">系统管理</a>
+             </div>
+             <div class="main_left_navi_home_font_go">
+                 <img src="Images/go_icon.png">
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="16" style="display: none;" id="s9">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="Role/index.html">角色管理</a>
+             </div>
+         </div>
+         <div class="main_left_navi_subnav" param="16" style="display: none;" id="s10">
+             <div class="main_left_navi_subnav_font_unselected">
+                 <a href="User/index.html">用户管理</a>
+             </div>
+         </div>
+     </div>
+</div>
+          <div class="main_content_right" id="a6">
+
+         <div class="main_right_content" >
+             <iframe id="admin_iframe" name="admin_iframe" scrolling="auto" frameborder="0" src="device/EQ.html" width="100%" height="700px" style="height: 700px;"></iframe>
+         </div>
+     </div>
+
+
+      </div>
+  </div>
+ </div>
+
+     <script>
+         var username;
+         var customername;
+         var session;
+         $("#a1").hide();
+         $("#a2").hide();
+         $("#a3").hide();
+         $("#a4").hide();
+         $("#a5").hide();
+         $("#a7").hide();
+
+
+
+    $('.main_left_navi_home').live("click",function(e){
+        e.preventDefault();
+        var href = $(this).find("a").attr("href");
+        var child = $(this).find("a").attr("param");
+        if($.trim(href) != "/bui-bootstrap"){
+            $('#admin_iframe').attr("src",href);
+        }
+
+        $('.main_left_navi_home_selected').removeClass("main_left_navi_home_selected");
+        $('.main_left_navi_home_font_selected').removeClass("main_left_navi_home_font_selected");
+        $('.main_left_navi_subnav_font_selected').removeClass("main_left_navi_subnav_font_selected");
+
+        if($(this).find("a").attr("haschild")==0){
+            $(this).parent().parent().addClass("main_left_navi_home_selected");
+        }
+        $(this).parent().addClass("main_left_navi_home_font_selected");
+
+        $('.main_left_navi_subnav').hide();
+        $('.main_left_navi_subnav[param='+child+']').toggle();
+        $('#admin_iframe').attr("src", $('.main_left_navi_subnav[param='+child+']:first').find("a").attr("href"));
+        $('.main_left_navi_subnav[param='+child+']:first').children(".main_left_navi_subnav_font_unselected").addClass("main_left_navi_subnav_font_selected");
+    });
+
+    $('.main_left_navi_subnav a').live("click",function(e){
+        e.preventDefault();
+        $('#admin_iframe').attr("src",$(this).attr("href"));
+        if($(this).attr("href")=='/bui-bootstrap/index.html'){
+            $(".main_content_left").css("min-height", "1770px");
+        }else{
+            $(".main_content_left").css("min-height", "974px");
+        }
+        $('.main_left_navi_subnav_font_selected').removeClass("main_left_navi_subnav_font_selected");
+        $(this).parent().addClass("main_left_navi_subnav_font_selected");
+    });
+
+
+    $(document).ready(function () {
+         username = window.sessionStorage.getItem('customerId');
+         customername= window.sessionStorage.getItem('customername');
+         session= window.sessionStorage.getItem('session');
+         $("#customername").html(customername);
+         console.log(username);
+         console.log(customername);
+         console.log(session);
+         if(session === '1')
+         {
+             $("#a1").show();
+             $("#a2").show();
+             $("#a3").show();
+             $("#a4").show();
+             $("#a5").show();
+
+         }
+        if(session === '2')
+        {
+            $("#a1").show();
+            $("#a2").show();
+            $("#a3").show();
+            $("#a4").show();
+            $("#a5").hide();
+            $("#s9").hide();
+            $("#s10").hide();
+
+        }
+        if(session === '3')
+        {
+            $("#a1").hide();
+            $("#a2").hide();
+            $("#a3").hide();
+            $("#a4").hide();
+            $("#a5").hide();
+            $("#s1").hide();
+            $("#s2").hide();
+            $("#s3").hide();
+            $("#s4").hide();
+            $("#s5").hide();
+            $("#s6").show();
+            $("#s7").hide();
+            $("#s8").show();
+            $("#s9").hide();
+            $("#s10").hide();
+
+        }
+    });
+
+        function deleteItem(){
+        sessionStorage.removeItem('customerId');
+    }
+
+
+
+  </script>
+ </body>
+</html>
